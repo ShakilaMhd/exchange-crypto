@@ -16,6 +16,7 @@ function HomePage() {
     //   .catch((err) => console.error(err));
 
     const getData = async () => {
+      setIsLoading(true);
       const res = await fetch(getCoinList(page));
       const json = await res.json();
       setCoins(json);
@@ -25,8 +26,8 @@ function HomePage() {
   }, [page]);
   return (
     <div>
-      <Pagination page={page} setPage={setPage} />
       <TableCoins coins={coins} isLoading={isLoading} />
+      <Pagination page={page} setPage={setPage} />
     </div>
   );
 }
