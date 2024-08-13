@@ -4,6 +4,7 @@ import { getCoinList } from "../../services/CryptoApi";
 
 function HomePage() {
   const [coins, setCoins] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // const options = { method: "GET", headers: { accept: "application/json" } };
@@ -16,12 +17,13 @@ function HomePage() {
       const res = await fetch(getCoinList());
       const json = await res.json();
       setCoins(json);
+      setIsLoading(false)
     };
     getData();
   }, []);
   return (
     <div>
-      <TableCoins coins={coins} />
+      <TableCoins coins={coins} isLoading={isLoading} />
     </div>
   );
 }
