@@ -3,6 +3,7 @@ import chartUp from "../../assets/chart-up.svg";
 import chartDown from "../../assets/chart-down.svg";
 import { RotatingLines } from "react-loader-spinner";
 import styles from "./TableCoins.module.css";
+import { marketChart } from "../../services/CryptoApi";
 
 function TableCoins({ coins, isLoading, setChart }) {
   console.log(coins);
@@ -36,6 +37,7 @@ export default TableCoins;
 
 const TableRow = ({
   coin: {
+    id,
     image,
     name,
     symbol,
@@ -43,11 +45,18 @@ const TableRow = ({
     price_change_percentage_24h,
     current_price,
   },
-  setChart
+  setChart,
 }) => {
-  const showHandler = () => {
-    setChart(true)
-  }
+  const showHandler = async () => {
+    try {
+      const res = await fetch(marketChart(id));
+      const json = await res.json();
+      console.log(json);
+      setChart(json);
+    } catch (error) {
+      setChart(null);
+    }
+  };
   return (
     <tr>
       <td>
@@ -58,7 +67,11 @@ const TableRow = ({
       </td>
       <td>{name}</td>
       <td>{current_price.toLocaleString()}</td>
-      <td className={price_change_percentage_24h > 0 ? styles.success : styles.error}>
+      <td
+        className={
+          price_change_percentage_24h > 0 ? styles.success : styles.error
+        }
+      >
         {price_change_percentage_24h.toFixed(2)}%
       </td>
       <td>{total_volume.toLocaleString()}</td>
