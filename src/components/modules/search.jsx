@@ -52,7 +52,7 @@ function search({ currency, setCurrency }) {
         <option value="eur">EUR</option>
         <option value="jpy">JPY</option>
       </select>
-      <div className={styles.searchResult}>
+     {!!coin.length && ( <div className={styles.searchResult}>
         {isLoading && (
           <RotatingLines
             width="50px"
@@ -69,7 +69,7 @@ function search({ currency, setCurrency }) {
             </li>
           ))}
         </ul>
-      </div>
+      </div>)}
     </div>
   );
 }
